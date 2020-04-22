@@ -24,28 +24,21 @@ jobs:
   eslint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
-      - uses: stefanoeb/eslint-action@1.0.2
-```
+      - name: Check out Git repository
+        uses: actions/checkout@v2
 
-By default it will run ESLint through all the files in the project. But you can also specify a glob of files to lint using the `with:` argument on your YAML file. The example below shows ESLint running only on the files under the `src/` folder:
-
-```yml
-name: Lint
-
-on: [push]
-
-jobs:
-  eslint:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v1
-      - uses: stefanoeb/eslint-action@1.0.2
+      - name: Set up Node.js
+        uses: actions/setup-node@v1
         with:
-          files: src/
-```
+          node-version: 12
 
-If there is no previous step installing the necessary modules, this action will execute a `yarn install` or `npm install` automatically.
+      # ESLint and Prettier must be in `package.json`
+      - name: Install Node.js dependencies
+        run: npm install
+
+      - name: Linting
+        uses: KOJI-SAS/eslint-action@master
+```
 
 ## License
 
